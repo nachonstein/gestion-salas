@@ -4,6 +4,8 @@
 **Objetivo:** Encapsular la API externa de validación de DNI y los canales de email/SMS definidos por rol.  
 **Alcance:** Clientes/adaptadores externos configurables y pruebas con dobles controlados. No inventar rutas, payloads, respuestas ni política de reintentos.
 
+**Estado:** Implementada.
+
 ## Entradas y salidas
 
 - **Entrada:** DNI, destinatario y rol/mensaje del usuario; contratos técnicos aprobados en GUS-01.
@@ -22,12 +24,12 @@
 
 ## Criterios de aceptación
 
-- [ ] La configuración de URL y credenciales, si aplica, se obtiene del entorno.
-- [ ] El cliente respeta el contrato confirmado en GUS-01.
-- [ ] El resultado de validación distingue aprobación, rechazo y fallo técnico.
-- [ ] Cada rol usa el destinatario, canal y mensaje definidos por los requisitos.
-- [ ] Ningún error de red se convierte silenciosamente en validación correcta o notificación exitosa.
-- [ ] La lógica de dominio no depende de detalles HTTP del proveedor.
+- [x] La configuración de URL y credenciales, si aplica, se obtiene del entorno.
+- [x] El cliente respeta el contrato confirmado en GUS-01.
+- [x] El resultado de validación distingue aprobación, rechazo y fallo técnico.
+- [x] Cada rol usa el destinatario, canal y mensaje definidos por los requisitos.
+- [x] Ningún error de red se convierte silenciosamente en validación correcta o notificación exitosa.
+- [x] La lógica de dominio no depende de detalles HTTP del proveedor.
 
 ## Especificación de pruebas
 
