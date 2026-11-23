@@ -1,0 +1,158 @@
+{
+  "version": "1.0",
+  "description": "Canonical registry of all foundation document filenames, their document titles, and who generates them. This is the single source of truth for naming consistency across all discovery agents.",
+  "validation": {
+    "required_frontmatter_keys": [
+      "version",
+      "generated_at",
+      "last_modified_by",
+      "last_modified_by_version",
+      "foundation_hash",
+      "produced_from"
+    ]
+  },
+  "documents": [
+    {
+      "filename": "project-intent.md",
+      "title": "Project Intent",
+      "description": "Vision, objectives, scope, and business constraints",
+      "generated_by": ["discovery-knowledge", "discovery-code", "discovery-runtime"],
+      "doc_rule": { "mode": "knowledge-always" },
+      "template_path": ".github/templates/foundational_context/project-intent.md",
+      "required": true
+    },
+    {
+      "filename": "domain-landscape.md",
+      "title": "Domain Landscape",
+      "description": "Bounded contexts, domain glossary, and relationships",
+      "generated_by": ["discovery-knowledge"],
+      "doc_rule": { "mode": "knowledge-always" },
+      "template_path": ".github/templates/foundational_context/domain-landscape.md",
+      "required": true
+    },
+    {
+      "filename": "guardrails.md",
+      "title": "Guardrails",
+      "description": "Non-negotiable principles and constraints that block delivery if violated",
+      "generated_by": ["discovery-knowledge"],
+      "doc_rule": { "mode": "knowledge-always" },
+      "template_path": ".github/templates/foundational_context/guardrails.md",
+      "required": true
+    },
+    {
+      "filename": "anti-patterns.md",
+      "title": "Anti-Patterns",
+      "description": "Forbidden patterns with detection and correct alternatives",
+      "generated_by": ["discovery-knowledge"],
+      "doc_rule": { "mode": "knowledge-always" },
+      "template_path": ".github/templates/foundational_context/anti-patterns.md",
+      "required": true
+    },
+    {
+      "filename": "architecture-decisions.md",
+      "title": "Architecture Decisions",
+      "description": "ADR log with context, decisions, and consequences",
+      "generated_by": ["discovery-knowledge"],
+      "doc_rule": { "mode": "knowledge-always" },
+      "template_path": ".github/templates/foundational_context/architecture-decisions.md",
+      "required": true
+    },
+    {
+      "filename": "task-spec.md",
+      "title": "Task Specification Template",
+      "description": "Standard delivery task template with authoring and implementation rules",
+      "generated_by": ["discovery-knowledge"],
+      "doc_rule": { "mode": "knowledge-always" },
+      "template_path": ".github/templates/foundational_context/task-spec.md",
+      "required": true
+    },
+    {
+      "filename": "feature-spec.md",
+      "title": "Feature Spec Template",
+      "description": "Feature specification template for consistent feature delivery",
+      "generated_by": ["discovery-knowledge"],
+      "doc_rule": { "mode": "manual-template" },
+      "template_path": ".github/templates/foundational_context/feature-spec.md",
+      "required": false,
+      "conditional": "when coding guides are ingested"
+    },
+    {
+      "filename": "coding-conventions.md",
+      "title": "Coding Conventions",
+      "description": "Naming, structure, and style conventions for the project",
+      "generated_by": ["discovery-knowledge"],
+      "doc_rule": { "mode": "code-or-knowledge-conditional" },
+      "template_path": ".github/templates/foundational_context/coding-conventions.md",
+      "required": false,
+      "conditional": "when coding guides are ingested"
+    },
+    {
+      "filename": "testing-strategy.md",
+      "title": "Testing Strategy",
+      "description": "Test strategy, quality levels, and conventions",
+      "generated_by": ["discovery-knowledge", "discovery-code", "discovery-runtime"],
+      "doc_rule": { "mode": "runtime-or-knowledge-conditional" },
+      "template_path": ".github/templates/foundational_context/testing-strategy.md",
+      "required": false,
+      "conditional": "when testing documentation is ingested"
+    },
+    {
+      "filename": "framework-api-registry.md",
+      "title": "Framework API Registry",
+      "description": "Correct API signatures, usage notes, and code examples",
+      "generated_by": ["discovery-knowledge"],
+      "doc_rule": { "mode": "code-or-knowledge-conditional" },
+      "template_path": ".github/templates/foundational_context/framework-api-registry.md",
+      "required": false,
+      "conditional": "when framework API documentation is ingested"
+    },
+    {
+      "filename": "data-model.md",
+      "title": "Data Model",
+      "description": "Domain entities, DTOs, and data structures",
+      "generated_by": ["discovery-code"],
+      "doc_rule": { "mode": "code-required" },
+      "template_path": ".github/templates/foundational_context/data-model.md",
+      "required": false,
+      "source": "static code analysis"
+    },
+    {
+      "filename": "service-map.md",
+      "title": "Service Map",
+      "description": "Components, dependency injection graph, and call chains",
+      "generated_by": ["discovery-code"],
+      "doc_rule": { "mode": "code-required" },
+      "template_path": ".github/templates/foundational_context/service-map.md",
+      "required": false,
+      "source": "static code analysis"
+    },
+    {
+      "filename": "api-contracts.md",
+      "title": "API Contracts",
+      "description": "HTTP endpoints, request/response schemas, and error handling",
+      "generated_by": ["discovery-code"],
+      "doc_rule": { "mode": "code-required" },
+      "template_path": ".github/templates/foundational_context/api-contracts.md",
+      "required": false,
+      "source": "static code analysis"
+    },
+    {
+      "filename": "user-journey-ui.md",
+      "title": "User Journey & UI",
+      "description": "User flows, screen interactions, and UI patterns observed from running application",
+      "generated_by": ["discovery-runtime"],
+      "doc_rule": { "mode": "runtime-required" },
+      "template_path": ".github/templates/foundational_context/user-journey-ui.md",
+      "required": false,
+      "source": "runtime observation"
+    }
+  ],
+  "notes": [
+    "CRITICAL: This registry is the single source of truth for document filenames.",
+    "ALL agents MUST consult this registry before writing foundation documents.",
+    "Never generate filenames by slugifying document titles—always use the filename field.",
+    "If an agent generates a document not in this registry, it is an error—report it.",
+    "Document titles may differ from filenames (e.g., title='Guardrails', filename='guardrails.md')—this is OK and expected.",
+    "When validating foundation output, check BOTH filename correctness and title consistency against this registry."
+  ]
+}

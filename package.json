@@ -1,0 +1,30 @@
+{
+  "name": "vg-discovery-agent",
+  "version": "2.0.10",
+  "description": "Installs the Vanguard Discovery Agent — a GitHub Copilot agent definition for AI-driven Sprint 0 foundation discovery.",
+  "keywords": [
+    "github-copilot",
+    "ai-agent",
+    "discovery",
+    "openspec",
+    "vanguard"
+  ],
+  "license": "Apache-2.0",
+  "bin": {
+    "vg-discovery-agent": "cli.js"
+  },
+  "scripts": {
+    "postinstall": "node cli.js"
+  },
+  "files": [
+    ".github",
+    "cli.js",
+    "Capgemini Agentic Workbench - license, terms and conditions.md",
+    "Capgemini Agentic Workbench - license, terms and conditions.pdf",
+    "README.md",
+    "package.json"
+  ],
+  "publishConfig": {
+    "registry": "https://pkgs.dev.azure.com/genaivanguard/_packaging/vg-discovery-agent/npm/registry/"
+  }
+}
