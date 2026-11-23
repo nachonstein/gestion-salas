@@ -64,6 +64,19 @@ class UsuarioRepositoryTests {
     }
 
     @Test
+    void shouldNotFindUsuarioOutsideSala1() {
+        Sala sala1 = salaRepository.findById(1L).orElseThrow();
+        Sala otraSala = salaRepository.saveAndFlush(new Sala(null));
+        Usuario usuario = usuarioRepository.saveAndFlush(
+                new Usuario("maria", "maria@example.com", "600000000", "superadmin", "11111111A", otraSala)
+        );
+
+        assertTrue(usuarioRepository.findByIdAndSala_Id(usuario.getId(), 1L).isEmpty());
+        assertTrue(usuarioRepository.findByIdAndSala_Id(usuario.getId(), otraSala.getId()).isPresent());
+        assertEquals(1L, sala1.getId());
+    }
+
+    @Test
     void shouldEnforceCaseInsensitiveEmailUniquenessInDatabase() {
         Sala sala1 = salaRepository.findById(1L).orElseThrow();
         usuarioRepository.saveAndFlush(

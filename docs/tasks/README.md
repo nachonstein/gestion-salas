@@ -12,7 +12,7 @@ Este plan descompone los documentos fundacionales en trabajo implementable. El e
 | GUS-04 | P1 | Implementar validaciones y errores de dominio | GUS-01 | Implementada |
 | GUS-05 | P1 | Integrar validación de DNI y notificaciones | GUS-01, GUS-02 | Implementada |
 | GUS-06 | P1 | Implementar alta de usuario en sala 1 | GUS-03, GUS-04, GUS-05 | Implementada |
-| GUS-07 | P2 | Implementar consulta de usuario por ID | GUS-01, GUS-03 | Pendiente |
+| GUS-07 | P2 | Implementar consulta de usuario por ID | GUS-01, GUS-03 | Implementada |
 | GUS-08 | P1 | Completar pruebas de aceptación y arranque | GUS-06, GUS-07 | Pendiente |
 
 GUS-01 está cerrada documentalmente; los contratos acordados están en [su registro de decisiones](../decisions/GUS-01-contract-decisions.md) y en OpenSpec. GUS-02 puede avanzar de forma independiente. Las tareas GUS-03 a GUS-07 deben incluir sus pruebas unitarias y de integración; GUS-08 cubre los flujos completos y el arranque integrado, no sustituye esas pruebas.

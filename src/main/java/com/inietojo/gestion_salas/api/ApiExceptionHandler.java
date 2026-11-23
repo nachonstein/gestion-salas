@@ -1,6 +1,7 @@
 package com.inietojo.gestion_salas.api;
 
 import com.inietojo.gestion_salas.domain.AltaUsuarioException;
+import com.inietojo.gestion_salas.domain.ConsultaUsuarioException;
 import com.inietojo.gestion_salas.domain.ValidacionUsuarioException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +24,14 @@ public class ApiExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleAlta(AltaUsuarioException exception) {
         return ResponseEntity.status(exception.getStatus()).body(Map.of(
                 "code", exception.getStatus(),
+                "message", exception.getMessage()
+        ));
+    }
+
+    @ExceptionHandler(ConsultaUsuarioException.class)
+    public ResponseEntity<Map<String, Object>> handleConsulta(ConsultaUsuarioException exception) {
+        return ResponseEntity.status(404).body(Map.of(
+                "code", 404,
                 "message", exception.getMessage()
         ));
     }

@@ -19,11 +19,11 @@
 
 ## Criterios de aceptación
 
-- [ ] Ruta, parámetro, cuerpo exitoso y respuesta de inexistencia están aprobados en GUS-01.
-- [ ] La consulta está restringida a sala 1.
-- [ ] Se devuelve un DTO de API, no directamente una entidad de persistencia.
-- [ ] No se realizan escrituras ni notificaciones durante la consulta.
-- [ ] ID inválido/inexistente se maneja explícitamente.
+- [x] Ruta, parámetro, cuerpo exitoso y respuesta de inexistencia están aprobados en GUS-01.
+- [x] La consulta está restringida a sala 1.
+- [x] Se devuelve un DTO de API, no directamente una entidad de persistencia.
+- [x] No se realizan escrituras ni notificaciones durante la consulta.
+- [x] ID inválido/inexistente se maneja explícitamente.
 
 ## Especificación de pruebas
 
