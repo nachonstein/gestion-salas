@@ -22,12 +22,12 @@
 
 ## Criterios de aceptación
 
-- [ ] Hay una prueba de arranque con configuración de prueba explícita.
-- [ ] La suite no contacta servicios externos reales ni utiliza credenciales embebidas.
-- [ ] Se cubren alta Admin, alta Superadmin, consulta existente, consulta inexistente, duplicidad y rechazos de validación/DNI.
-- [ ] Se verifican status y cuerpos HTTP, persistencia y llamadas externas relevantes.
-- [ ] Las pruebas se ejecutan de forma reproducible mediante Maven.
-- [ ] Se documentan requisitos locales para ejecutar la suite, sin imponer infraestructura adicional no acordada.
+- [x] Hay una prueba de arranque con configuración de prueba explícita.
+- [x] La suite no contacta servicios externos reales ni utiliza credenciales embebidas.
+- [x] Se cubren alta Admin, alta Superadmin, consulta existente, consulta inexistente, duplicidad y rechazos de validación/DNI.
+- [x] Se verifican status y cuerpos HTTP, persistencia y llamadas externas relevantes.
+- [x] Las pruebas se ejecutan de forma reproducible mediante Maven.
+- [x] Se documentan requisitos locales para ejecutar la suite, sin imponer infraestructura adicional no acordada.
 
 ## Especificación de pruebas
 
@@ -35,6 +35,17 @@
 - **Integración:** usar PostgreSQL de prueba y adaptadores externos controlados.
 - **Aceptación:** ejecutar los escenarios end-to-end enumerados arriba.
 - **Cobertura:** cada flujo/ramificación listada; el proyecto no fija porcentaje mínimo.
+
+## Ejecución local
+
+La suite usa el perfil Maven `test`, H2 aislado y dependencias externas sustituidas por mocks:
+
+```powershell
+$env:JAVA_HOME="C:\Program Files\Eclipse Adoptium\jdk-17.0.3.7-hotspot"
+& .\mvnw.cmd test
+```
+
+Requiere Java 17. No requiere PostgreSQL, Docker ni credenciales externas para ejecutar las pruebas. La aplicación prueba usa `src/test/resources/application-test.properties`; ningún adaptador real recibe llamadas.
 
 ## Preguntas abiertas
 
