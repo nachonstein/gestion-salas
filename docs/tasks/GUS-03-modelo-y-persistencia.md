@@ -21,12 +21,13 @@
 
 ## Criterios de aceptación
 
-- [ ] El esquema refleja Sala 1:N Usuario y Usuario:N:1 Sala.
-- [ ] El ID de Sala es único e incremental de tipo `long`; la estrategia de ID de Usuario respeta GUS-01.
-- [ ] El email tiene una restricción de unicidad efectiva en persistencia.
-- [ ] La consulta está acotada a la sala 1 según la regla funcional.
-- [ ] Se documenta y prueba cómo se crea o encuentra la sala 1.
-- [ ] Los cambios de esquema son reproducibles y compatibles con la base PostgreSQL existente.
+- [x] El esquema refleja Sala 1:N Usuario y Usuario:N:1 Sala mediante clave foránea no nula.
+- [x] El ID de Sala es único e incremental de tipo `long`; el ID de Usuario también es incremental de tipo `long`, según GUS-01.
+- [x] El email se normaliza a minúsculas antes de persistir y tiene una restricción de unicidad en la base de datos.
+- [x] `UsuarioRepository.findByIdAndSala_Id` limita la consulta a la sala indicada.
+- [x] `Sala1Provisioner` aprovisiona sala 1 idempotentemente al arrancar; el test de contexto verifica su presencia y un test de repositorio verifica la repetición.
+- [x] Flyway aplica una migración versionada y aditiva sobre tablas con prefijo `gestion_salas_`; Hibernate valida el esquema sin modificarlo. Para una base existente no vacía, Flyway la marca en versión 0 antes de aplicar la migración.
+- [ ] Verificar la migración contra PostgreSQL real y el esquema existente; por ahora, la integración solo se ejecutó en H2 en modo PostgreSQL.
 
 ## Especificación de pruebas
 
@@ -37,8 +38,14 @@
 
 ## Preguntas abiertas
 
-- GUS-01 debe cerrar tipo/estrategia de ID de Usuario y aprovisionamiento de sala 1.
-- El esquema existente de la base `users` no está descrito; inspeccionarlo antes de crear migraciones destructivas o incompatibles.
+- Cerradas por GUS-01: IDs incrementales `long` para sala y usuario, y aprovisionamiento obligatorio de sala 1.
+- El esquema legado de la base `users` no está descrito ni fue inspeccionado en este entorno. La migración no altera tablas existentes: utiliza tablas con prefijo propio y baseline de Flyway. Si esos nombres ya estuvieran ocupados, el arranque falla explícitamente en vez de modificar datos.
+
+## Implementación
+
+- `V1__create_salas_and_usuarios.sql` crea ambas tablas, secuencias, clave foránea y restricción única de email; inserta la sala 1 como parte del esquema inicial.
+- `Sala1Provisioner` usa una inserción condicional en cada arranque, por lo que repara la ausencia de esa fila sin duplicarla.
+- Las pruebas de persistencia usan H2 en modo PostgreSQL; no se ejecutaron contra una instancia real de PostgreSQL en este entorno.
 
 ## Referencias
 
