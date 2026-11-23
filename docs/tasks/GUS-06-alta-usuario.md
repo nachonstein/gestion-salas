@@ -23,14 +23,14 @@
 
 ## Criterios de aceptación
 
-- [ ] El endpoint y el formato de errores coinciden exactamente con GUS-01.
-- [ ] El controlador solo adapta HTTP y delega el caso de uso.
-- [ ] Se conserva el conjunto completo de campos del request a través de las capas necesarias.
-- [ ] DNI se valida antes de persistir.
-- [ ] El usuario se asocia a sala 1 y el ID generado se devuelve en HTTP 201.
-- [ ] La notificación usa el canal correspondiente y el mensaje exacto.
-- [ ] Los errores de validación, duplicidad y DNI no producen alta.
-- [ ] El orden y comportamiento ante fallos de notificación siguen la decisión de GUS-01.
+- [x] El endpoint y el formato de errores coinciden exactamente con GUS-01.
+- [x] El controlador solo adapta HTTP y delega el caso de uso.
+- [x] Se conserva el conjunto completo de campos del request a través de las capas necesarias.
+- [x] DNI se valida antes de persistir.
+- [x] El usuario se asocia a sala 1 y el ID generado se devuelve en HTTP 201.
+- [x] La notificación usa el canal correspondiente y el mensaje exacto.
+- [x] Los errores de validación, duplicidad y DNI no producen alta.
+- [x] El orden y comportamiento ante fallos de notificación siguen la decisión de GUS-01.
 
 ## Especificación de pruebas
 
