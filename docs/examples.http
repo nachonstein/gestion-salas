@@ -1,0 +1,28 @@
+###
+# @name Crear usuario
+POST http://localhost:8080/usuarios
+Content-Type: application/json
+
+{ "name": "pablo",
+  "email": "pablo3@email.com",
+  "phone": "677998899",
+  "rol": "admin",
+  "dni": "23454234W"
+}
+
+###
+# @name Crear usuario (error dni)
+POST http://localhost:8080/usuarios
+Content-Type: application/json
+
+{ "name": "pablo",
+  "email": "pablo3@email.com",
+  "phone": "677998899",
+  "rol": "admin",
+  "dni": "99999999w"
+}
+###
+
+# @name Obtener usuario
+GET http://localhost:8080/usuarios/2
+Content-Type: application/json
