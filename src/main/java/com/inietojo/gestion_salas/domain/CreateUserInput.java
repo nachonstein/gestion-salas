@@ -1,7 +1,6 @@
 package com.inietojo.gestion_salas.domain;
 
-public record UsuarioConsulta(
-        Long id,
+public record CreateUserInput(
         String name,
         String email,
         String phone,

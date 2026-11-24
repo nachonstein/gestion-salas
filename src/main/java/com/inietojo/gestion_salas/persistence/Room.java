@@ -20,19 +20,19 @@ import java.util.List;
         allocationSize = 1,
         initialValue = 2
 )
-public class Sala {
+public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sala_id_generator")
     private Long id;
 
-    @OneToMany(mappedBy = "sala", fetch = FetchType.LAZY)
-    private List<Usuario> usuarios = new ArrayList<>();
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
+    private List<User> users = new ArrayList<>();
 
-    protected Sala() {
+    protected Room() {
     }
 
-    public Sala(Long id) {
+    public Room(Long id) {
         this.id = id;
     }
 
@@ -40,7 +40,7 @@ public class Sala {
         return id;
     }
 
-    public List<Usuario> getUsuarios() {
-        return usuarios;
+    public List<User> getUsers() {
+        return users;
     }
 }

@@ -27,9 +27,9 @@ class ExternalApiIntegrationTests {
         try {
             ExternalDniValidator validator = validator(server);
 
-            assertEquals(DniValidationResult.APPROVED, validator.validar("23454234W"));
-            assertEquals(DniValidationResult.REJECTED, validator.validar("99999999w"));
-            assertEquals(DniValidationResult.APPROVED, validator.validar("23454234W"));
+            assertEquals(DniValidationResult.APPROVED, validator.validate("23454234W"));
+            assertEquals(DniValidationResult.REJECTED, validator.validate("99999999w"));
+            assertEquals(DniValidationResult.APPROVED, validator.validate("23454234W"));
         } finally {
             server.stop(0);
         }
@@ -41,7 +41,7 @@ class ExternalApiIntegrationTests {
                 new ExternalApiProperties("http://127.0.0.1:1", Duration.ofMillis(100))
         );
 
-        assertEquals(DniValidationResult.TECHNICAL_FAILURE, validator.validar("23454234W"));
+        assertEquals(DniValidationResult.TECHNICAL_FAILURE, validator.validate("23454234W"));
     }
 
     @Test
@@ -59,7 +59,7 @@ class ExternalApiIntegrationTests {
             ExternalUserNotifier notifier = notifier(server);
 
             assertEquals(NotificationResult.SENT,
-                    notifier.notificar("admin", "email@example.com", "677998899"));
+                    notifier.notify("admin", "email@example.com", "677998899"));
             assertEquals("/email", path.get());
             assertEquals(true, body.get().contains("\"email\":\"email@example.com\""));
             assertEquals(true, body.get().contains("\"message\":\"usuario guardado\""));
@@ -83,7 +83,7 @@ class ExternalApiIntegrationTests {
             ExternalUserNotifier notifier = notifier(server);
 
             assertEquals(NotificationResult.SENT,
-                    notifier.notificar("superadmin", "email@example.com", "677998899"));
+                    notifier.notify("superadmin", "email@example.com", "677998899"));
             assertEquals("/sms", path.get());
             assertEquals(true, body.get().contains("\"phone\":\"677998899\""));
             assertEquals(true, body.get().contains("\"message\":\"usuario guardado\""));
@@ -101,7 +101,7 @@ class ExternalApiIntegrationTests {
 
         try {
             assertEquals(NotificationResult.FAILED,
-                    notifier(server).notificar("admin", "email@example.com", "677998899"));
+                    notifier(server).notify("admin", "email@example.com", "677998899"));
         } finally {
             server.stop(0);
         }

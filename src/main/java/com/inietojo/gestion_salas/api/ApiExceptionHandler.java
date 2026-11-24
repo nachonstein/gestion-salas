@@ -1,8 +1,8 @@
 package com.inietojo.gestion_salas.api;
 
-import com.inietojo.gestion_salas.domain.AltaUsuarioException;
-import com.inietojo.gestion_salas.domain.ConsultaUsuarioException;
-import com.inietojo.gestion_salas.domain.ValidacionUsuarioException;
+import com.inietojo.gestion_salas.domain.CreateUserException;
+import com.inietojo.gestion_salas.domain.GetUserException;
+import com.inietojo.gestion_salas.domain.UserValidationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,24 +12,24 @@ import java.util.Map;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler(ValidacionUsuarioException.class)
-    public ResponseEntity<Map<String, Object>> handleValidation(ValidacionUsuarioException exception) {
+    @ExceptionHandler(UserValidationException.class)
+    public ResponseEntity<Map<String, Object>> handleValidation(UserValidationException exception) {
         return ResponseEntity.status(409).body(Map.of(
                 "code", 409,
                 "message", exception.getMessage()
         ));
     }
 
-    @ExceptionHandler(AltaUsuarioException.class)
-    public ResponseEntity<Map<String, Object>> handleAlta(AltaUsuarioException exception) {
+    @ExceptionHandler(CreateUserException.class)
+    public ResponseEntity<Map<String, Object>> handleCreate(CreateUserException exception) {
         return ResponseEntity.status(exception.getStatus()).body(Map.of(
                 "code", exception.getStatus(),
                 "message", exception.getMessage()
         ));
     }
 
-    @ExceptionHandler(ConsultaUsuarioException.class)
-    public ResponseEntity<Map<String, Object>> handleConsulta(ConsultaUsuarioException exception) {
+    @ExceptionHandler(GetUserException.class)
+    public ResponseEntity<Map<String, Object>> handleGet(GetUserException exception) {
         return ResponseEntity.status(404).body(Map.of(
                 "code", 404,
                 "message", exception.getMessage()

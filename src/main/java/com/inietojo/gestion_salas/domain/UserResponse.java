@@ -1,6 +1,7 @@
 package com.inietojo.gestion_salas.domain;
 
-public record UsuarioAlta(
+public record UserResponse(
+        Long id,
         String name,
         String email,
         String phone,

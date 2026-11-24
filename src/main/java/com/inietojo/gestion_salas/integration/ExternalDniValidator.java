@@ -28,7 +28,7 @@ public class ExternalDniValidator implements DniValidator {
     }
 
     @Override
-    public DniValidationResult validar(String dni) {
+    public DniValidationResult validate(String dni) {
         try {
             Integer status = restClient.patch()
                     .uri("/check-dni")

@@ -1,12 +1,12 @@
 package com.inietojo.gestion_salas.api;
 
-import com.inietojo.gestion_salas.domain.AltaUsuarioService;
-import com.inietojo.gestion_salas.domain.ConsultaUsuarioService;
+import com.inietojo.gestion_salas.domain.CreateUserService;
+import com.inietojo.gestion_salas.domain.GetUserService;
 import com.inietojo.gestion_salas.integration.DniValidationResult;
 import com.inietojo.gestion_salas.integration.DniValidator;
 import com.inietojo.gestion_salas.integration.NotificationResult;
 import com.inietojo.gestion_salas.integration.UserNotifier;
-import com.inietojo.gestion_salas.persistence.UsuarioRepository;
+import com.inietojo.gestion_salas.persistence.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +33,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
-class AceptacionUsuariosTests {
+class UserAcceptanceTests {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private AltaUsuarioService altaUsuarioService;
+    private CreateUserService createUserService;
 
     @Autowired
-    private ConsultaUsuarioService consultaUsuarioService;
+    private GetUserService getUserService;
 
     @MockitoBean
     private DniValidator dniValidator;
@@ -54,20 +54,20 @@ class AceptacionUsuariosTests {
     @BeforeEach
     void setUp() {
         reset(dniValidator, userNotifier);
-        usuarioRepository.deleteAll();
+        userRepository.deleteAll();
         mockMvc = MockMvcBuilders
                 .standaloneSetup(
-                        new AltaUsuarioController(altaUsuarioService),
-                        new ConsultaUsuarioController(consultaUsuarioService)
+                        new CreateUserController(createUserService),
+                        new GetUserController(getUserService)
                 )
                 .setControllerAdvice(new ApiExceptionHandler())
                 .build();
-        when(dniValidator.validar(any())).thenReturn(DniValidationResult.APPROVED);
-        when(userNotifier.notificar(any(), any(), any())).thenReturn(NotificationResult.SENT);
+        when(dniValidator.validate(any())).thenReturn(DniValidationResult.APPROVED);
+        when(userNotifier.notify(any(), any(), any())).thenReturn(NotificationResult.SENT);
     }
 
     @Test
-    void aceptaAltaAdminPersisteYNotificaPorEmail() throws Exception {
+    void acceptsAdminCreatePersistsAndNotifiesByEmail() throws Exception {
         mockMvc.perform(post("/usuarios")
                         .contentType("application/json")
                         .content(json(Map.of(
@@ -80,14 +80,14 @@ class AceptacionUsuariosTests {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber());
 
-        Long id = usuarioRepository.findAll().get(0).getId();
-        assertTrue(usuarioRepository.findByIdAndSala_Id(id, 1L).isPresent());
-        assertEquals("pablo", usuarioRepository.findById(id).orElseThrow().getName());
-        verify(userNotifier).notificar("admin", "pablo@example.com", "677998899");
+        Long id = userRepository.findAll().get(0).getId();
+        assertTrue(userRepository.findByIdAndRoom_Id(id, 1L).isPresent());
+        assertEquals("pablo", userRepository.findById(id).orElseThrow().getName());
+        verify(userNotifier).notify("admin", "pablo@example.com", "677998899");
     }
 
     @Test
-    void aceptaAltaSuperadminPersisteYNotificaPorSms() throws Exception {
+    void acceptsSuperadminCreatePersistsAndNotifiesBySms() throws Exception {
         mockMvc.perform(post("/usuarios")
                         .contentType("application/json")
                         .content(json(Map.of(
@@ -100,12 +100,12 @@ class AceptacionUsuariosTests {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber());
 
-        verify(userNotifier).notificar("superadmin", "maria@example.com", "600000000");
+        verify(userNotifier).notify("superadmin", "maria@example.com", "600000000");
     }
 
     @Test
-    void rechazaDniYNoPersisteNiNotifica() throws Exception {
-        when(dniValidator.validar("99999999w")).thenReturn(DniValidationResult.REJECTED);
+    void rejectsDniAndDoesNotPersistOrNotify() throws Exception {
+        when(dniValidator.validate("99999999w")).thenReturn(DniValidationResult.REJECTED);
 
         mockMvc.perform(post("/usuarios")
                         .contentType("application/json")
@@ -120,11 +120,11 @@ class AceptacionUsuariosTests {
                 .andExpect(jsonPath("$.code").value(409))
                 .andExpect(jsonPath("$.message").value("error validation dni"));
 
-        assertEquals(0, usuarioRepository.count());
+        assertEquals(0, userRepository.count());
     }
 
     @Test
-    void rechazaValidacionYNoPersiste() throws Exception {
+    void rejectsValidationAndDoesNotPersist() throws Exception {
         mockMvc.perform(post("/usuarios")
                         .contentType("application/json")
                         .content(json(Map.of(
@@ -138,11 +138,11 @@ class AceptacionUsuariosTests {
                 .andExpect(jsonPath("$.code").value(409))
                 .andExpect(jsonPath("$.message").value("error validation userName"));
 
-        assertEquals(0, usuarioRepository.count());
+        assertEquals(0, userRepository.count());
     }
 
     @Test
-    void rechazaEmailDuplicadoSinCrearOtraFila() throws Exception {
+    void rejectsDuplicateEmailWithoutCreatingAnotherRow() throws Exception {
         String input = json(Map.of(
                 "name", "Pablo",
                 "email", "duplicado@example.com",
@@ -159,16 +159,16 @@ class AceptacionUsuariosTests {
                 .andExpect(jsonPath("$.code").value(409))
                 .andExpect(jsonPath("$.message").value("error validation email"));
 
-        assertEquals(1, usuarioRepository.count());
+        assertEquals(1, userRepository.count());
     }
 
     @Test
-    void consultaExistenteYConsultaInexistente() throws Exception {
+    void returnsExistingUserAndMissingUserNotFound() throws Exception {
         mockMvc.perform(post("/usuarios")
                         .contentType("application/json")
                         .content(json(Map.of(
                                 "name", "Pablo",
-                                "email", "consulta@example.com",
+                                "email", "response@example.com",
                                 "phone", "677998899",
                                 "rol", "admin",
                                 "dni", "23454234W"
@@ -176,13 +176,13 @@ class AceptacionUsuariosTests {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        Long id = usuarioRepository.findAll().get(0).getId();
+        Long id = userRepository.findAll().get(0).getId();
 
         mockMvc.perform(get("/usuarios/" + id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value("pablo"))
-                .andExpect(jsonPath("$.email").value("consulta@example.com"))
+                .andExpect(jsonPath("$.email").value("response@example.com"))
                 .andExpect(jsonPath("$.rol").value("admin"));
 
         mockMvc.perform(get("/usuarios/999999"))

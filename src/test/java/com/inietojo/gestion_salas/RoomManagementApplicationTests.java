@@ -5,17 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import com.inietojo.gestion_salas.persistence.SalaRepository;
+import com.inietojo.gestion_salas.persistence.RoomRepository;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class GestionSalasApplicationTests {
+class RoomManagementApplicationTests {
 
     @Autowired
     private Environment environment;
 
     @Autowired
-    private SalaRepository salaRepository;
+    private RoomRepository roomRepository;
 
     @Test
     void contextLoads() {
@@ -27,6 +27,6 @@ class GestionSalasApplicationTests {
                 "http://127.0.0.1:1081",
                 environment.getProperty("external.api.base-url")
         );
-        org.junit.jupiter.api.Assertions.assertTrue(salaRepository.findById(1L).isPresent());
+        org.junit.jupiter.api.Assertions.assertTrue(roomRepository.findById(1L).isPresent());
     }
 }

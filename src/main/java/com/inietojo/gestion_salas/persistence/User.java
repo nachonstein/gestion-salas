@@ -22,7 +22,7 @@ import java.util.Locale;
         sequenceName = "gestion_salas_usuario_seq",
         allocationSize = 1
 )
-public class Usuario {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_id_generator")
@@ -45,18 +45,18 @@ public class Usuario {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sala_id", nullable = false)
-    private Sala sala;
+    private Room room;
 
-    protected Usuario() {
+    protected User() {
     }
 
-    public Usuario(String name, String email, String phone, String rol, String dni, Sala sala) {
+    public User(String name, String email, String phone, String rol, String dni, Room room) {
         this.name = name;
         this.email = normalizeEmail(email);
         this.phone = phone;
         this.rol = rol;
         this.dni = dni;
-        this.sala = sala;
+        this.room = room;
     }
 
     @PrePersist
@@ -93,7 +93,7 @@ public class Usuario {
         return dni;
     }
 
-    public Sala getSala() {
-        return sala;
+    public Room getRoom() {
+        return room;
     }
 }

@@ -7,22 +7,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class Sala1Provisioner implements ApplicationRunner {
+public class RoomOneProvisioner implements ApplicationRunner {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public Sala1Provisioner(JdbcTemplate jdbcTemplate) {
+    public RoomOneProvisioner(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
-        ensureSala1();
+        ensureRoomOne();
     }
 
     @Transactional
-    public void ensureSala1() {
+    public void ensureRoomOne() {
         jdbcTemplate.update(
                 "INSERT INTO gestion_salas_sala (id) "
                         + "SELECT 1 WHERE NOT EXISTS "

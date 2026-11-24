@@ -1,8 +1,8 @@
 package com.inietojo.gestion_salas.api;
 
-import com.inietojo.gestion_salas.domain.AltaUsuarioService;
-import com.inietojo.gestion_salas.domain.ValidacionUsuarioException;
-import com.inietojo.gestion_salas.domain.UsuarioAlta;
+import com.inietojo.gestion_salas.domain.CreateUserService;
+import com.inietojo.gestion_salas.domain.UserValidationException;
+import com.inietojo.gestion_salas.domain.CreateUserInput;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +15,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class AltaUsuarioControllerTests {
+class CreateUserControllerTests {
 
     @Test
     void returns201WithGeneratedId() {
-        AltaUsuarioService service = mock(AltaUsuarioService.class);
-        when(service.alta(any(UsuarioAlta.class))).thenReturn(42L);
+        CreateUserService service = mock(CreateUserService.class);
+        when(service.create(any(CreateUserInput.class))).thenReturn(42L);
 
         ResponseEntity<Map<String, Long>> response =
-                new AltaUsuarioController(service).alta(
-                        new UsuarioAlta("pablo", "email@example.com", "677998899", "admin", "23454234W")
+                new CreateUserController(service).create(
+                        new CreateUserInput("pablo", "email@example.com", "677998899", "admin", "23454234W")
                 );
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -33,7 +33,7 @@ class AltaUsuarioControllerTests {
 
     @Test
     void exceptionHandlerReturnsValidationContract() {
-        ValidacionUsuarioException exception = new ValidacionUsuarioException("email");
+        UserValidationException exception = new UserValidationException("email");
         ResponseEntity<Map<String, Object>> response =
                 new ApiExceptionHandler().handleValidation(exception);
 

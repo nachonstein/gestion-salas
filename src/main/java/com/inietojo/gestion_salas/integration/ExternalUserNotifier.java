@@ -32,16 +32,16 @@ public class ExternalUserNotifier implements UserNotifier {
     }
 
     @Override
-    public NotificationResult notificar(String rol, String email, String phone) {
+    public NotificationResult notify(String rol, String email, String phone) {
         if ("admin".equals(rol)) {
-            return enviar("/email", Map.of(
+            return send("/email", Map.of(
                     "email", email,
                     "message", "usuario guardado"
             ), "email");
         }
 
         if ("superadmin".equals(rol)) {
-            return enviar("/sms", Map.of(
+            return send("/sms", Map.of(
                     "phone", phone,
                     "message", "usuario guardado"
             ), "sms");
@@ -50,7 +50,7 @@ public class ExternalUserNotifier implements UserNotifier {
         return NotificationResult.FAILED;
     }
 
-    private NotificationResult enviar(String uri, Map<String, String> body, String channel) {
+    private NotificationResult send(String uri, Map<String, String> body, String channel) {
         try {
             Integer status = restClient.post()
                     .uri(uri)
